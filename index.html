@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 20/10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffcce6, #ffe6f2);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Background với mưa trái tim và hoa hồng */
+        .background-falling {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            opacity: 0.7;
+            animation: falling linear infinite;
+            pointer-events: none;
+        }
+        
+        .heart {
+            color: #ff3366;
+        }
+        
+        .rose {
+            color: #ff6699;
+        }
+        
+        /* Phong cách cho bức thư ban đầu */
+        .letter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .letter-container {
+            background-color: #fff;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            position: relative;
+            animation: slideUp 0.5s ease;
+            z-index: 101;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ff6699;
+            transition: transform 0.3s;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .letter-content h2 {
+            color: #ff6699;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .letter-content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .letter-note {
+            margin-top: 20px;
+            font-style: italic;
+            color: #ff6699;
+            text-align: center;
+        }
+        
+        /* Phong cách cho bó hoa */
+        .flower-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            animation: fadeIn 1s ease;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .bouquet {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .bouquet img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .bouquet:hover {
+            transform: scale(1.05);
+        }
+        
+        .greeting {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ff3366;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            z-index: 10;
+            position: relative;
+        }
+        
+        /* Phong cách cho thư nhỏ */
+        .small-letter {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            z-index: 200;
+            animation: popIn 0.5s ease;
+        }
+        
+        .small-letter-content {
+            text-align: center;
+        }
+        
+        .small-letter-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .small-letter-content p {
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* Nút trái tim chuyển thư */
+        .heart-button {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #ff3366;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 201;
+        }
+        
+        .heart-button:hover {
+            background-color: #ff6699;
+            transform: scale(1.1);
+        }
+        
+        .heart-button::before {
+            content: "♥";
+            color: white;
+            font-size: 20px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background với mưa trái tim và hoa hồng -->
+    <div class="background-falling" id="fallingBackground"></div>
+    
+    <!-- Bức thư ban đầu -->
+    <div class="letter-overlay" id="initialLetter">
+        <div class="letter-container">
+            <span class="close-btn" id="closeLetter">&times;</span>
+            <div class="letter-content">
+                <h2>Gửi đến người con gái đặc biệt!</h2>
+                <p>Hi ebeee siuuu iu của a ❤️</p>
+                <p>Nhân dịp Ngày Phụ nữ Việt Nam 20/10 🌹🌹🌹, anh muốn gửi đến ebeee những lời chúc tốt đẹp nhất 💝💝💝 . Ebeee là một người con gái tuyệt vời với trái tim ấm áp và tâm hồn đẹp.</p>
+                <p>Chúc bae của toi luôn xinh đẹp, hạnh phúc và thành công trong cuộc sống. Mong rằng mỗi ngày của em đều tràn ngập niềm vui và nụ cười.</p>
+                <p class="letter-note">Hãy nhấn vào bó hoa nhé ebeee siuuu iuu của toi</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bó hoa -->
+    <div class="flower-container" id="flowerContainer">
+        <div class="bouquet" id="bouquet">
+            <!-- Thay thế đường dẫn ảnh bó hoa tại đây -->
+            <img src="Bo_hoa_chinh1.png" alt="Bó hoa hồng">
+        </div>
+        <div class="greeting">Chúc em 20/10 vui vẻ!</div>
+    </div>
+    
+    <!-- Thư nhỏ 1 -->
+    <div class="small-letter" id="smallLetter1">
+        <div class="small-letter-content">
+            <!-- Thay đổi đường dẫn ảnh tại đây -->
+            <img src="FB_IMG_1.jpg" alt="Hình ảnh động viên">
+            <p>20 tháng 10 này, anh không chúc em điều gì lớn lao cả. Anh chỉ chúc em luôn khỏe mạnh, vui tươi và mãi ở bên cạnh anh. Mỗi ngày bên em đều là một ngày thật đặc biệt.</p>
+        </div>
+        <div class="heart-button" id="heartButton1"></div>
+    </div>
+    
+    <!-- Thư nhỏ 2 -->
+    <div class="small-letter" id="smallLetter2">
+        <div class="small-letter-content">
+            <!-- Thay đổi đường dẫn ảnh tại đây -->
+            <img src="FB_IMG_2.jpg" alt="Hình ảnh động viên">
+            <p>Trời xanh mây trắng năng vàng </p>
+            <p>Anh dành tặng hết những lời yêu thương </p>
+            <p>Chúc em hết phần thiên hương</p>
+            <p>Suốt đời bên cạnh... người thương là Anh hẹ hẹ </p>
+        </div>
+        <div class="heart-button" id="heartButton2"></div>
+    </div>
+    
+    <!-- Thư nhỏ 3 -->
+    <div class="small-letter" id="smallLetter3">
+        <div class="small-letter-content">
+            <!-- Thay đổi đường dẫn ảnh tại đây -->
+            <img src="FB_IMG_3.jpg" alt="Hình ảnh động viên">
+            <p>Ebeee của anh ơi! 20/10 rồi, chúc ebeee của toi ngày càng xinh đẹp, học giỏi và yêu anh nhiều hơn nhé ^^. Hôm nay để anh chiều chuộng và yêu thương em hết mực nhé ebee iuu</p>
+        </div>
+        <div class="heart-button" id="heartButton3"></div>
+    </div>
+
+    <script>
+        // Tạo mưa trái tim và hoa hồng
+        function createFallingItems() {
+            const background = document.getElementById('fallingBackground');
+            const items = ['❤️', '🌹', '💖', '🌸', '💝', '🌺', '💕', '🏵️'];
+            
+            // Tạo 50 phần tử rơi
+            for (let i = 0; i < 50; i++) {
+                const item = document.createElement('div');
+                const randomItem = items[Math.floor(Math.random() * items.length)];
+                
+                item.classList.add('falling-item');
+                item.innerHTML = randomItem;
+                
+                // Phân loại trái tim và hoa hồng
+                if (randomItem === '❤️' || randomItem === '💖' || randomItem === '💝' || randomItem === '💕') {
+                    item.classList.add('heart');
+                } else {
+                    item.classList.add('rose');
+                }
+                
+                // Vị trí ngẫu nhiên
+                const left = Math.random() * 100;
+                item.style.left = `${left}vw`;
+                
+                // Thời gian rơi ngẫu nhiên từ 5-15 giây
+                const duration = 5 + Math.random() * 10;
+                item.style.animationDuration = `${duration}s`;
+                
+                // Độ trễ ngẫu nhiên
+                const delay = Math.random() * 5;
+                item.style.animationDelay = `${delay}s`;
+                
+                // Kích thước ngẫu nhiên
+                const size = 20 + Math.random() * 20;
+                item.style.fontSize = `${size}px`;
+                
+                background.appendChild(item);
+            }
+        }
+        
+        // Gọi hàm tạo mưa khi trang tải xong
+        window.addEventListener('load', createFallingItems);
+        
+        // Đóng bức thư ban đầu
+        document.getElementById('closeLetter').addEventListener('click', closeInitialLetter);
+        document.getElementById('initialLetter').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInitialLetter();
+            }
+        });
+        
+        function closeInitialLetter() {
+            document.getElementById('initialLetter').style.display = 'none';
+            document.getElementById('flowerContainer').style.display = 'flex';
+        }
+        
+        // Hiển thị thư nhỏ khi nhấn vào bó hoa
+        let currentLetter = 0;
+        const smallLetters = [
+            document.getElementById('smallLetter1'),
+            document.getElementById('smallLetter2'),
+            document.getElementById('smallLetter3')
+        ];
+        
+        document.getElementById('bouquet').addEventListener('click', function() {
+            // Ẩn thư hiện tại nếu có
+            smallLetters.forEach(letter => {
+                letter.style.display = 'none';
+            });
+            
+            // Hiển thị thư tiếp theo
+            currentLetter = (currentLetter + 1) % smallLetters.length;
+            smallLetters[currentLetter].style.display = 'block';
+        });
+        
+        // Đóng thư nhỏ khi nhấn ra ngoài
+        smallLetters.forEach(letter => {
+            letter.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        });
+        
+        // Chuyển thư nhỏ khi nhấn vào nút trái tim
+        document.getElementById('heartButton1').addEventListener('click', function(e) {
+            e.stopPropagation(); // Ngăn sự kiện lan ra ngoài (tránh đóng thư)
+            smallLetters[0].style.display = 'none';
+            currentLetter = (currentLetter + 1) % smallLetters.length;
+            smallLetters[currentLetter].style.display = 'block';
+        });
+        
+        document.getElementById('heartButton2').addEventListener('click', function(e) {
+            e.stopPropagation();
+            smallLetters[1].style.display = 'none';
+            currentLetter = (currentLetter + 1) % smallLetters.length;
+            smallLetters[currentLetter].style.display = 'block';
+        });
+        
+        document.getElementById('heartButton3').addEventListener('click', function(e) {
+            e.stopPropagation();
+            smallLetters[2].style.display = 'none';
+            currentLetter = (currentLetter + 1) % smallLetters.length;
+            smallLetters[currentLetter].style.display = 'block';
+        });
+    </script>
+</body>
+</html>
